@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área Restrita</title>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Creepster', cursive;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: url('https://imgs.search.brave.com/3x2bZUIkce_zNAT54tAoEPzXca09PjAcTFsJuCnDdNo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzdlLzk0/L2I0LzdlOTRiNGI2/ZmU1YzkzY2MwOTkz/Njg4ODQ1NzcxMGU4/LmpwZw') no-repeat center center fixed;
+            background-size: 100% 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #eee;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        input {
+            display: block;
+            margin: 10px auto;
+            padding: 12px;
+            width: 85%;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            background: #222;
+            color: white;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: #444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #9b0000;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            font-size: 0.9em;
+            color: white;
+            opacity: 0.7;
+        }
+
+        .whatsapp-link {
+            display: block;
+            margin-top: 20px;
+            color: #25D366;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .whatsapp-link:hover {
+            text-decoration: underline;
+        }
+
+        .register-link {
+            margin-top: 15px;
+            color: #ff0000;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+
+        .login-link {
+            margin-top: 15px;
+            color: #00ff00;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .login-link:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .show-password {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Página de Login -->
+    <div class="container" id="loginBox">
+        <h2>Bem-vindo! Faça login</h2>
+        <input type="text" id="username" placeholder="Usuário">
+        <input type="password" id="password" placeholder="Senha">
+        <div class="show-password">
+            <label for="showPassword">Mostrar Senha</label>
+            <input type="checkbox" id="showPassword" onclick="togglePassword()">
+        </div>
+        <button onclick="checkLogin()">Entrar</button>
+        <a href="javascript:void(0);" class="register-link" onclick="showRegister()">Criar uma nova conta</a>
+    </div>
+
+    <!-- Página de Criação de Conta -->
+    <div class="container hidden" id="registerBox">
+        <h2>Criar Nova Conta</h2>
+        <input type="text" id="newUsername" placeholder="Novo Usuário">
+        <input type="password" id="newPassword" placeholder="Nova Senha">
+        <input type="password" id="confirmPassword" placeholder="Confirmar Senha">
+        <div class="show-password">
+            <label for="showNewPassword">Mostrar Senha</label>
+            <input type="checkbox" id="showNewPassword" onclick="toggleNewPassword()">
+        </div>
+        <button onclick="createAccount()">Criar Conta</button>
+        <a href="javascript:void(0);" class="login-link" onclick="showLogin()">Já tem uma conta? Faça login</a>
+    </div>
+
+    <div class="footer">Site criado por Gustavo𒉭</div>
+
+    <script>
+        // Função para exibir a tela de login
+        function showLogin() {
+            document.getElementById("registerBox").classList.add("hidden");
+            document.getElementById("loginBox").classList.remove("hidden");
+        }
+
+        // Função para exibir a tela de registro
+        function showRegister() {
+            document.getElementById("loginBox").classList.add("hidden");
+            document.getElementById("registerBox").classList.remove("hidden");
+        }
+
+        // Função de verificação de login
+        function checkLogin() {
+            var user = document.getElementById("username").value;
+            var pass = document.getElementById("password").value;
+
+            // Verificando se as credenciais correspondem ao que foi criado
+            if (localStorage.getItem(user) && localStorage.getItem(user) === pass) {
+                localStorage.setItem('userLoggedIn', user); // Marca como logado
+                window.location.href = "memes.html"; // Redireciona para a página de memes
+            } else {
+                alert("Usuário ou senha incorretos!");
+            }
+        }
+
+        // Função de criação de conta
+        function createAccount() {
+            var newUser = document.getElementById("newUsername").value;
+            var newPass = document.getElementById("newPassword").value;
+            var confirmPass = document.getElementById("confirmPassword").value;
+
+            if (newPass !== confirmPass) {
+                alert("As senhas não coincidem!");
+            } else if (newUser === "" || newPass === "") {
+                alert("Preencha todos os campos!");
+            } else {
+                // Salvando a nova conta no LocalStorage
+                localStorage.setItem(newUser, newPass);
+                alert("Conta criada com sucesso!");
+                showLogin(); // Retorna à tela de login após criar a conta
+            }
+        }
+
+        // Função para alternar a visibilidade da senha
+        function togglePassword() {
+            var passwordField = document.getElementById("password");
+            if (document.getElementById("showPassword").checked) {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+
+        // Função para alternar a visibilidade da senha na criação de conta
+        function toggleNewPassword() {
+            var passwordField = document.getElementById("newPassword");
+            if (document.getElementById("showNewPassword").checked) {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+    </script>
+</body>
+</html>
